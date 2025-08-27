@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 from . import views
+from .views import DetailProgramView, DetailCourseView    
 
 
 urlpatterns = [
@@ -9,7 +10,7 @@ urlpatterns = [
     path('programs/', views.list_programs, name='list_programs'),
 
     #Listing detail program
-    path('detail_program/<int:pk>/', views.detail_program, name='detail_program'),
+    path('detail_program/<int:pk>/', DetailProgramView.as_view(), name='detail_program'),
 
     #Listing all skills
     path('skills/', views.list_skills, name='list_skills'),
@@ -18,7 +19,7 @@ urlpatterns = [
     path('courses/', views.list_courses, name='list_courses'),
 
     #Listing detail course
-    path('detail_course/<int:pk>/', views.detail_course, name='detail_course'),
+    path('detail_course/<int:pk>/', DetailCourseView.as_view(), name='detail_course'),
 
     #Listing all learning goals
     path('learning_goals/', views.list_learning_goals, name='list_learning_goals'),

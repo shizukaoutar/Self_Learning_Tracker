@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .models import Program, Skill, Course, LearningGoal
 from django.views.generic.detail import DetailView
+from .forms import ProgramForm, SkillForm, CourseForm, LearningGoalForm
 
 # Create your views here.
 
