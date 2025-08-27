@@ -1,16 +1,16 @@
-<!--edit course-->
+<!--edit program-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Edit Course</title>
+    <title>Edit Program</title>
 </head>
 <body>
-    <h1>Edit Course</h1>
+    <h1>Edit Program</h1>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Edit Course</button>
+        <button type="submit">Edit Program</button>
     </form>
 </body>
 </html>

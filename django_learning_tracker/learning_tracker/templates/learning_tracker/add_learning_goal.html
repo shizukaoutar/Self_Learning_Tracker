@@ -1,0 +1,16 @@
+<!--add learning goal-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Learning Goal</title>
+</head>
+<body>
+    <h1>Add Learning Goal</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Add Learning Goal</button>
+    </form>
+</body>
+</html>

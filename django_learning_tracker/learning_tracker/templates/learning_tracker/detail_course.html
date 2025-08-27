@@ -1,0 +1,32 @@
+<!--detail course-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Detail of Course</title>
+</head>
+<body>
+    <h1>Course: {{ course.name }}</h1>
+    <p>Description: {{ course.description }}</p>
+    <p>Duration Hours: {{ course.duration_hours }}</p>
+    <p>Skills:</p>
+    <ul>
+        {% for skill in course.skills.all %}
+        <li>{{ skill.name }}</li>
+        {% endfor %}
+    </ul>
+    <p>Learning Goals:</p>
+    <ul>
+        {% for learning_goal in course.learning_goals.all %}
+        <li>{{ learning_goal.name }}</li>
+        {% endfor %}
+    </ul>
+    <p>Status: {{ course.status }}</p>
+    <p>Start Date: {{ course.start_date }}</p>
+    <p>End Date: {{ course.end_date }}</p>
+    <p>Completion Date: {{ course.completion_date }}</p>
+    <p>Progress Percentage: {{ course.progress_percentage }}</p>
+    <p>Course URL: {{ course.course_url }}</p>
+    <p>Notes: {{ course.notes }}</p>   
+</body>
+</html>

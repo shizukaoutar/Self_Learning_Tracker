@@ -1,0 +1,36 @@
+<!--detail program-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Detail of Program</title>
+</head>
+<body>
+    <h1>Program: {{ program.name }}</h1>
+    <p>Description: {{ program.description }}</p>
+    <p>Skills:</p>
+    <ul>
+        {% for skill in program.skills.all %}
+        <li>{{ skill.name }}</li>
+        {% endfor %}
+    </ul>
+    <p>Courses:</p>
+    <ul>
+        {% for course in program.courses.all %}
+        <li>{{ course.name }}</li>
+        {% endfor %}
+    </ul>
+    <p>Learning Goals:</p>
+    <ul>
+        {% for learning_goal in program.learning_goals.all %}
+        <li>{{ learning_goal.name }}</li>
+        {% endfor %}
+    </ul>
+    <p>Difficulty Level: {{ program.difficulty_level }}</p>
+    <p>Start Date: {{ program.start_date }}</p>
+    <p>End Date: {{ program.end_date }}</p>
+    <p>Program URL: {{ program.program_url }}</p>
+    <p>Status: {{ program.status }}</p>
+    <p>Notes: {{ program.notes }}</p>   
+</body>
+</html>

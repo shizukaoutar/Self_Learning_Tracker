@@ -1,0 +1,16 @@
+<!--list learning goals-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>List Learning Goals</title>
+</head>
+<body>
+    <h1>List Learning Goals</h1>
+    <ul>
+        {% for learning_goal in learning_goals %}
+            <li>{{ learning_goal.name }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

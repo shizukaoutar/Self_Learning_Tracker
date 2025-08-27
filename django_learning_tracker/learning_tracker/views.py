@@ -30,6 +30,15 @@ def list_courses(request):
     courses = Course.objects.all()
     context = {'courses': courses}
     return render(request, 'learning_tracker/list_courses.html', context)
+
+class DetailCourseView(DetailView):
+    model = Course
+    template_name = 'learning_tracker/detail_course.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['courses'] = self.object.courses.all()
+        return context
     
 #Listing all learning goals
 def list_learning_goals(request):
