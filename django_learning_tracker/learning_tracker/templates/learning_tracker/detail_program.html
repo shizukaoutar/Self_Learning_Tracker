@@ -8,7 +8,7 @@
 <body>
     <h1>Program: {{ program.name }}</h1>
     <p>Description: {{ program.description }}</p>
-    <p>Skills:</p>
+<!--     <p>Skills:</p>
     <ul>
         {% for skill in program.skills.all %}
         <li>{{ skill.name }}</li>
@@ -25,12 +25,13 @@
         {% for learning_goal in program.learning_goals.all %}
         <li>{{ learning_goal.name }}</li>
         {% endfor %}
-    </ul>
+    </ul> -->
     <p>Difficulty Level: {{ program.difficulty_level }}</p>
     <p>Start Date: {{ program.start_date }}</p>
     <p>End Date: {{ program.end_date }}</p>
     <p>Program URL: {{ program.program_url }}</p>
     <p>Status: {{ program.status }}</p>
     <p>Notes: {{ program.notes }}</p>   
+    <a href="{% url 'list_programs' %}" return="list_programs">Back to Programs</a>
 </body>
 </html>

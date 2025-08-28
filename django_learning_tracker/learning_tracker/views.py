@@ -13,12 +13,8 @@ def list_programs(request):
 
 class DetailProgramView(DetailView):
     model = Program
-    template_name = 'learning_tracker/detail_program.html'
+    template_name = 'learning_tracker/detail_program.html' 
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['programs'] = self.object.programs.all()
-        return context
     
 #Listing all skills
 def list_skills(request):
@@ -36,10 +32,6 @@ class DetailCourseView(DetailView):
     model = Course
     template_name = 'learning_tracker/detail_course.html'
     
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['courses'] = self.object.courses.all()
-        return context
     
 #Listing all learning goals
 def list_learning_goals(request):
@@ -111,7 +103,7 @@ def edit_program(request, pk):
         form = ProgramForm(request.POST, instance=program)
         if form.is_valid():
             form.save()
-            return redirect('list_programs')
+            return redirect('list_programs', pk=program.id)
     else:
         form = ProgramForm(instance=program)
     

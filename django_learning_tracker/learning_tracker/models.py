@@ -3,13 +3,14 @@ from django.db import models
 # Create your models here.
 
 class Program(models.Model):
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
     description = models.TextField()
     provider = models.CharField(max_length=100)
     difficulty_level = models.CharField(max_length=100)
     status = models.CharField(max_length=100)
-    start_date = models.DateField()
-    end_date = models.DateField()
+    start_date = models.DateField() #format: YYYY-MM-DD
+    end_date = models.DateField() #format: YYYY-MM-DD
     progress_percentage = models.IntegerField(default=0)
     program_url = models.URLField()
     notes = models.TextField()
@@ -22,14 +23,15 @@ class Program(models.Model):
 
 
 class Course(models.Model):
+    id = models.AutoField(primary_key=True)
     program_id = models.ForeignKey(Program, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     description = models.TextField()
     duration_hours = models.IntegerField()
     status = models.CharField(max_length=100)
-    start_date = models.DateField()
-    end_date = models.DateField()
-    completion_date = models.DateField()
+    start_date = models.DateField() #format: YYYY-MM-DD
+    end_date = models.DateField() #format: YYYY-MM-DD
+    completion_date = models.DateField() #format: YYYY-MM-DD
     progress_percentage = models.IntegerField(default=0)
     course_url = models.URLField()
     notes = models.TextField()
@@ -41,6 +43,7 @@ class Course(models.Model):
 
 
 class Skill(models.Model):
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
     description = models.TextField()
     skill_level = models.CharField(max_length=100)
@@ -50,6 +53,7 @@ class Skill(models.Model):
 
 
 class ProgramSkill(models.Model):
+    id = models.AutoField(primary_key=True)
     program_id = models.ForeignKey(Program, on_delete=models.CASCADE)
     skill_id = models.ForeignKey(Skill, on_delete=models.CASCADE)
     
@@ -59,10 +63,11 @@ class ProgramSkill(models.Model):
 
 
 class LearningGoal(models.Model):
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
     title = models.CharField(max_length=100)
     description = models.TextField()
-    target_date = models.DateField()
+    target_date = models.DateField() #format: YYYY-MM-DD
     priority = models.CharField(max_length=100)
     is_achieved = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -72,6 +77,7 @@ class LearningGoal(models.Model):
         return self.name
 
 class ProgramGoal(models.Model):
+    id = models.AutoField(primary_key=True)
     program_id = models.ForeignKey(Program, on_delete=models.CASCADE)
     learning_goal_id = models.ForeignKey(LearningGoal, on_delete=models.CASCADE)
     

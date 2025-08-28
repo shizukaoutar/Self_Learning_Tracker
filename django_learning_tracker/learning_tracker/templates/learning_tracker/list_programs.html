@@ -7,10 +7,27 @@
 </head>
 <body>
     <h1>Programs Available:</h1>
-    <ul>
+    <table>
+        <th>Name</th>
+        <th>Provider</th>
+        <th>Difficulty Level</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Details</th>
         {% for program in programs %}
-        <li>{{ program.name }} - {{ program.description }}</li>
+        <tr>
+            <td>{{ program.name }}</td>
+            <td>{{ program.provider }}</td>
+            <td>{{ program.difficulty_level }}</td>
+            <td>{{ program.start_date }}</td>
+            <td>{{ program.end_date }}</td>
+            <td><a href="{% url 'detail_program' program.id %}">Details</a></td>
+        </tr>
         {% endfor %}
-    </ul>
+    </table>
+    <form method="post" action="{% url 'add_program' %}">
+        {% csrf_token %}
+        <button type="submit">Add Program</button>
+    </form>     
 </body>
 </html>
