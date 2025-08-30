@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from .models import Program, Skill, Course, LearningGoal
 from django.views.generic.detail import DetailView
 from .forms import ProgramForm, SkillForm, CourseForm, LearningGoalForm
-from django.views.generic import UpdateView
+from django.views.generic import UpdateView, CreateView, DeleteView
+
 
 # Create your views here.
 
@@ -47,17 +48,11 @@ def list_learning_goals(request):
 ### Adding items ###
 
 #Add program
-def add_program(request):
-    if request.method == 'POST':
-        form = ProgramForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('list_programs')
-    else:
-        form = ProgramForm()
-    
-    context = {'form': form}
-    return render(request, 'learning_tracker/add_program.html', context)
+class AddProgramView(CreateView):
+    model = Program
+    form_class = ProgramForm
+    template_name = 'learning_tracker/add_program.html'
+    success_url = reverse_lazy('list_programs')
 
 
 #Add skill
@@ -111,7 +106,9 @@ class EditProgramView(UpdateView):
     form_class = ProgramForm
     queryset = Program.objects.all()
     template_name = 'learning_tracker/edit_program.html'
-    success_url = reverse_lazy('list_programs')
+   
+    def get_success_url(self):
+        return reverse('detail_program', kwargs={'pk': self.kwargs['pk']})
 
     def get_object(self):
         id = self.kwargs.get('pk')
@@ -164,11 +161,17 @@ def edit_learning_goal(request, pk):
 ### Deleting items ###
 
 #Delete program
-def delete_program(request, pk):
-    program = Program.objects.get(pk=pk)
-    if request.method == 'POST':
-        program.delete()
-        return redirect('list_programs')
+class DeleteProgramView(DeleteView):
+    model = Program
+    template_name = 'learning_tracker/delete_program.html'
+    success_url = reverse_lazy('list_programs')
+
+    def get_object(self):
+        id = self.kwargs.get('pk')
+        return get_object_or_404(Program, pk=id)
+
+    def get_success_url(self):
+        return reverse('list_programs')
 
 #Delete skill
 def delete_skill(request, pk):

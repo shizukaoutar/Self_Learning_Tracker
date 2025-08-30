@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 from . import views
-from .views import DetailProgramView, DetailCourseView, EditProgramView    
+from .views import DetailProgramView, DetailCourseView, EditProgramView, DeleteProgramView    
 
 
 urlpatterns = [
@@ -25,7 +25,7 @@ urlpatterns = [
     path('learning_goals/', views.list_learning_goals, name='list_learning_goals'),
 
     #Add program
-    path('add_program/', views.add_program, name='add_program'),    
+    path('add_program/', views.AddProgramView.as_view(), name='add_program'),    
 
     #Add skill
     path('add_skill/', views.add_skill, name='add_skill'),    
@@ -49,7 +49,7 @@ urlpatterns = [
     path('edit_learning_goal/<int:pk>/', views.edit_learning_goal, name='edit_learning_goal'),          
 
     #Delete program
-    path('delete_program/<int:pk>/', views.delete_program, name='delete_program'),        
+    path('delete_program/<int:pk>/', views.DeleteProgramView.as_view(), name='delete_program'),        
 
     #Delete skill
     path('delete_skill/<int:pk>/', views.delete_skill, name='delete_skill'),        
