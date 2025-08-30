@@ -1,9 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Program, Skill, Course, LearningGoal
 from django.views.generic.detail import DetailView
 from .forms import ProgramForm, SkillForm, CourseForm, LearningGoalForm
 
 # Create your views here.
+
+### Listing items ###
 
 #Listing all programs
 def list_programs(request):
@@ -39,6 +41,8 @@ def list_learning_goals(request):
     context = {'learning_goals': learning_goals}
     return render(request, 'learning_tracker/list_learning_goals.html', context)
     
+
+### Adding items ###
 
 #Add program
 def add_program(request):
@@ -96,6 +100,8 @@ def add_learning_goal(request):
     return render(request, 'learning_tracker/add_learning_goal.html', context)
 
 
+### Editing items ###
+
 #Edit program
 def edit_program(request, pk):
     program = Program.objects.get(pk=pk)
@@ -152,15 +158,15 @@ def edit_learning_goal(request, pk):
     context = {'form': form}
     return render(request, 'learning_tracker/edit_learning_goal.html', context)
 
+
+### Deleting items ###
+
 #Delete program
 def delete_program(request, pk):
     program = Program.objects.get(pk=pk)
     if request.method == 'POST':
         program.delete()
         return redirect('list_programs')
-    else:
-        context = {'program': program}
-        return render(request, 'learning_tracker/delete_program.html', context)
 
 #Delete skill
 def delete_skill(request, pk):
@@ -168,9 +174,6 @@ def delete_skill(request, pk):
     if request.method == 'POST':
         skill.delete()
         return redirect('list_skills')
-    else:
-        context = {'skill': skill}
-        return render(request, 'learning_tracker/delete_skill.html', context)
 
 #Delete course
 def delete_course(request, pk):
@@ -178,9 +181,6 @@ def delete_course(request, pk):
     if request.method == 'POST':
         course.delete()
         return redirect('list_courses')
-    else:
-        context = {'course': course}
-        return render(request, 'learning_tracker/delete_course.html', context)
 
 #Delete learning goal
 def delete_learning_goal(request, pk):
@@ -188,7 +188,5 @@ def delete_learning_goal(request, pk):
     if request.method == 'POST':
         learning_goal.delete()
         return redirect('list_learning_goals')
-    else:
-        context = {'learning_goal': learning_goal}
-        return render(request, 'learning_tracker/delete_learning_goal.html', context)
+
 
