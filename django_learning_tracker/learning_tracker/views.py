@@ -1,7 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse_lazy
 from .models import Program, Skill, Course, LearningGoal
 from django.views.generic.detail import DetailView
 from .forms import ProgramForm, SkillForm, CourseForm, LearningGoalForm
+from django.views.generic import UpdateView
 
 # Create your views here.
 
@@ -76,6 +78,7 @@ def add_skill(request):
 def add_course(request):
     if request.method == 'POST':
         form = CourseForm(request.POST)
+        program = request.POST.get('program')
         if form.is_valid():
             form.save()
             return redirect('list_courses')
@@ -103,18 +106,17 @@ def add_learning_goal(request):
 ### Editing items ###
 
 #Edit program
-def edit_program(request, pk):
-    program = Program.objects.get(pk=pk)
-    if request.method == 'POST':
-        form = ProgramForm(request.POST, instance=program)
-        if form.is_valid():
-            form.save()
-            return redirect('list_programs', pk=program.id)
-    else:
-        form = ProgramForm(instance=program)
+class EditProgramView(UpdateView):
+    model = Program
+    form_class = ProgramForm
+    queryset = Program.objects.all()
+    template_name = 'learning_tracker/edit_program.html'
+    success_url = reverse_lazy('list_programs')
+
+    def get_object(self):
+        id = self.kwargs.get('pk')
+        return get_object_or_404(Program, pk=id)
     
-    context = {'form': form}
-    return render(request, 'learning_tracker/edit_program.html', context)
 
 #Edit skill
 def edit_skill(request, pk):

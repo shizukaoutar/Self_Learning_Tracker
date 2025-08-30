@@ -11,6 +11,7 @@
         <th>Name</th>
         <th>Provider</th>
         <th>Difficulty Level</th>
+        <th>Status</th>
         <th>Start Date</th>
         <th>End Date</th>
         <th>Details</th>
@@ -19,6 +20,7 @@
             <td>{{ program.name }}</td>
             <td>{{ program.provider }}</td>
             <td>{{ program.difficulty_level }}</td>
+            <td>{{ program.status }}</td>
             <td>{{ program.start_date }}</td>
             <td>{{ program.end_date }}</td>
             <td><a href="{% url 'detail_program' program.id %}">Details</a></td>

@@ -33,7 +33,6 @@ class Program(models.Model):
     def __str__(self):
         return self.name    
 
-
 class Course(models.Model):
     STATUS_CHOICES = [
         ('PLANNED', 'Planned'),

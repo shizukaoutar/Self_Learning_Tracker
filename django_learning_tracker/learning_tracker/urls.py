@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 from . import views
-from .views import DetailProgramView, DetailCourseView    
+from .views import DetailProgramView, DetailCourseView, EditProgramView    
 
 
 urlpatterns = [
@@ -37,7 +37,7 @@ urlpatterns = [
     path('add_learning_goal/', views.add_learning_goal, name='add_learning_goal'),    
 
     #Edit program
-    path('edit_program/<int:pk>/', views.edit_program, name='edit_program'),        
+    path('edit_program/<int:pk>/edit/', EditProgramView.as_view(), name='edit_program'),        
 
     #Edit skill
     path('edit_skill/<int:pk>/', views.edit_skill, name='edit_skill'),        
