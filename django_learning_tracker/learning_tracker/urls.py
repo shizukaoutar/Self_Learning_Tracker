@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 from . import views
-from .views import DetailProgramView, DetailCourseView, EditProgramView, DeleteProgramView    
+from .views import DetailProgramView, DetailCourseView, EditProgramView, DeleteProgramView, AddCourseView, AddSkillView, AddLearningGoalView    
 
 
 urlpatterns = [
@@ -12,29 +12,20 @@ urlpatterns = [
     #Listing detail program
     path('detail_program/<int:pk>/', DetailProgramView.as_view(), name='detail_program'),
 
-    #Listing all skills
-    path('skills/', views.list_skills, name='list_skills'),
-
-    #Listing all courses
-    path('courses/', views.list_courses, name='list_courses'),
-
     #Listing detail course
     path('detail_course/<int:pk>/', DetailCourseView.as_view(), name='detail_course'),
-
-    #Listing all learning goals
-    path('learning_goals/', views.list_learning_goals, name='list_learning_goals'),
 
     #Add program
     path('add_program/', views.AddProgramView.as_view(), name='add_program'),    
 
-    #Add skill
-    path('add_skill/', views.add_skill, name='add_skill'),    
-
     #Add course
-    path('add_course/', views.add_course, name='add_course'),    
+    path('detail_program/<int:program_id>/add_course/', views.AddCourseView.as_view(), name='add_course'),    
+
+    #Add skill
+    path('detail_program/<int:program_id>/add_skill/', views.AddSkillView.as_view(), name='add_skill'),    
 
     #Add learning goal
-    path('add_learning_goal/', views.add_learning_goal, name='add_learning_goal'),    
+    path('detail_program/<int:program_id>/add_learning_goal/', views.AddLearningGoalView.as_view(), name='add_learning_goal'),    
 
     #Edit program
     path('edit_program/<int:pk>/edit/', EditProgramView.as_view(), name='edit_program'),        

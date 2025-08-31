@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Add Skill</h1>
-    <form method="post">
+    <form method="post" action="{% url 'add_skill' program_id=program_id %}">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Add Skill</button>

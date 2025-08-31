@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
-from .models import Program, Skill, Course, LearningGoal
+from .models import Program, Skill, Course, LearningGoal, ProgramSkill, ProgramGoal
 from django.views.generic.detail import DetailView
 from .forms import ProgramForm, SkillForm, CourseForm, LearningGoalForm
 from django.views.generic import UpdateView, CreateView, DeleteView
@@ -20,30 +20,10 @@ class DetailProgramView(DetailView):
     model = Program
     template_name = 'learning_tracker/detail_program.html' 
 
-    
-#Listing all skills
-def list_skills(request):
-    skills = Skill.objects.all()
-    context = {'skills': skills}
-    return render(request, 'learning_tracker/list_skills.html', context)
-    
-#Listing all courses
-def list_courses(request):
-    courses = Course.objects.all()
-    context = {'courses': courses}
-    return render(request, 'learning_tracker/list_courses.html', context)
 
 class DetailCourseView(DetailView):
     model = Course
     template_name = 'learning_tracker/detail_course.html'
-    
-    
-#Listing all learning goals
-def list_learning_goals(request):
-    learning_goals = LearningGoal.objects.all()
-    context = {'learning_goals': learning_goals}
-    return render(request, 'learning_tracker/list_learning_goals.html', context)
-    
 
 ### Adding items ###
 
@@ -54,48 +34,78 @@ class AddProgramView(CreateView):
     template_name = 'learning_tracker/add_program.html'
     success_url = reverse_lazy('list_programs')
 
+#Add course
+class AddCourseView(CreateView):
+    model = Course
+    form_class = CourseForm
+    template_name = 'learning_tracker/add_course.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['program_id'] = self.kwargs.get('program_id')
+        return context
+
+    def get_success_url(self):
+        program_id = self.kwargs.get('program_id')
+        return reverse('detail_program', kwargs={'pk': program_id})
+
+    def form_valid(self, form):
+        program_id = self.kwargs.get('program_id')
+        if program_id:
+            program = get_object_or_404(Program, pk=program_id)
+            form.instance.program = program
+        return super().form_valid(form)
 
 #Add skill
-def add_skill(request):
-    if request.method == 'POST':
-        form = SkillForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('list_skills')
-    else:
-        form = SkillForm()
+class AddSkillView(CreateView):
+    model = Skill
+    form_class = SkillForm
+    template_name = 'learning_tracker/add_skill.html'
     
-    context = {'form': form}
-    return render(request, 'learning_tracker/add_skill.html', context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['program_id'] = self.kwargs.get('program_id')
+        return context
 
+    def get_success_url(self):
+        program_id = self.kwargs.get('program_id')
+        return reverse('detail_program', kwargs={'pk': program_id})
 
-#Add course
-def add_course(request):
-    if request.method == 'POST':
-        form = CourseForm(request.POST)
-        program = request.POST.get('program')
-        if form.is_valid():
-            form.save()
-            return redirect('list_courses')
-    else:
-        form = CourseForm()
-    
-    context = {'form': form}
-    return render(request, 'learning_tracker/add_course.html', context)
+    def form_valid(self, form):
+        # Save the skill
+        response = super().form_valid(form)
+        # Get the program and create ProgramSkill relationship
+        program_id = self.kwargs.get('program_id')
+        if program_id:
+            program = get_object_or_404(Program, pk=program_id)
+            ProgramSkill.objects.create(program=program, skill=form.instance)
+
+        return response
 
 
 #Add learning goal
-def add_learning_goal(request):
-    if request.method == 'POST':
-        form = LearningGoalForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('list_learning_goals')
-    else:
-        form = LearningGoalForm()
+class AddLearningGoalView(CreateView):
+    model = LearningGoal
+    form_class = LearningGoalForm
+    template_name = 'learning_tracker/add_learning_goal.html'
     
-    context = {'form': form}
-    return render(request, 'learning_tracker/add_learning_goal.html', context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['program_id'] = self.kwargs.get('program_id')
+        return context
+
+    def get_success_url(self):
+        program_id = self.kwargs.get('program_id')
+        return reverse('detail_program', kwargs={'pk': program_id})
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        program_id = self.kwargs.get('program_id')
+        if program_id:
+            program = get_object_or_404(Program, pk=program_id)
+            ProgramGoal.objects.create(program=program, learning_goal=form.instance)
+
+        return response
 
 
 ### Editing items ###
