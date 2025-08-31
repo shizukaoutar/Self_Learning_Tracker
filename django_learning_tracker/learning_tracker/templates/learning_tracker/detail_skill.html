@@ -4,21 +4,34 @@
 <head>
     <meta charset="UTF-8">
     <title>Detail of Skill</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'learning_tracker/styles.css' %}">
 </head>
 <body>
-    <h1>Skill: {{ program_skill.skill.name }}</h1>
-    <table>
-        <tr>
-            <td>Description</td>
-            <td>{{ program_skill.skill.description }}</td>
-        </tr>
-        <tr>
-            <td>Skill Level</td>
-            <td>{{ program_skill.skill.get_skill_level_display}}</td>
-        </tr>
-    </table>
-    <a href="{% url 'edit_skill' program_skill.id %}">Edit</a>
-    <a href="{% url 'delete_skill' program_skill.id %}">Delete</a>
-    <a href="{% url 'detail_program' program_skill.program.id %}">Back to Program</a>
-
+    <div class="container fade-in">
+        <h1>Skill: {{ program_skill.skill.name }}</h1>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Skill Level</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ program_skill.skill.description }}</td>
+                        <td>{{ program_skill.skill.get_skill_level_display}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="action-buttons">
+            <a href="{% url 'edit_skill' program_skill.id %}"><button class="btn-secondary">Edit</button></a>
+            <a href="{% url 'delete_skill' program_skill.id %}"><button class="btn-danger">Delete</button></a>
+        </div>
+        <div class="nav-links">
+            <a href="{% url 'detail_program' program_skill.program.id %}">Back to Program</a>
+        </div>
+    </div>
 </body>

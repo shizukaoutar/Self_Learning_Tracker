@@ -4,13 +4,24 @@
 <head>
     <meta charset="UTF-8">
     <title>Add Learning Goal</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'learning_tracker/styles.css' %}">
 </head>
 <body>
-    <h1>Add Learning Goal</h1>
-    <form method="post" action="{% url 'add_learning_goal' program_id=program_id %}">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Add Learning Goal</button>
-    </form>
+    <div class="container fade-in">
+        <h1>Add Learning Goal</h1>
+        <form method="post" action="{% url 'add_learning_goal' program_id=program_id %}">
+            {% csrf_token %}
+            <div class="form-fields">
+                {{ form.as_p }}
+            </div>
+            <div class="action-buttons">
+                <button type="submit" value="Add Learning Goal" class="btn-success">Add Learning Goal</button>
+            </div>
+        </form>
+        <div class="nav-links">
+            <a href="{% url 'detail_program' program_id %}">Back to Program</a>
+        </div>
+    </div>
 </body>
 </html>

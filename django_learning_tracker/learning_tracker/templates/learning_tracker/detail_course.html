@@ -4,48 +4,61 @@
 <head>
     <meta charset="UTF-8">
     <title>Detail of Course</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'learning_tracker/styles.css' %}">
 </head>
 <body>
-    <h1>Course: {{ course.name }}</h1>
-    <table>
-        <tr>
-            <td>Program</td>
-            <td>{{ course.program.name }}</td>
-        </tr>
-        <tr>
-            <td>Description</td>
-            <td>{{ course.description }}</td>
-        </tr>
-        <tr>
-            <td>Duration Hours</td>
-            <td>{{ course.duration_hours }}</td>
-        </tr>
-        <tr>
-            <td>Status</td>
-            <td>{{ course.status }}</td>
-        </tr>
-        <tr>
-            <td>Start Date</td>
-            <td>{{ course.start_date }}</td>
-        </tr>
-        <tr>
-            <td>Completion Date</td>
-            <td>{{ course.completion_date }}</td>
-        </tr>
-        <tr>
-            <td>Progress Percentage</td>
-            <td>{{ course.progress_percentage }}</td>
-        </tr>
-        <tr>
-            <td>Course URL</td>
-            <td>{{ course.course_url }}</td>
-        </tr>
-        <tr>
-            <td>Notes</td>
-            <td>{{ course.notes }}</td>
-        </tr>
-    </table>
-    <a href="{% url 'edit_course' course.id %}">Edit</a>
-    <a href="{% url 'delete_course' course.id %}">Delete</a>
+    <div class="container fade-in">
+        <h1>Course: {{ course.name }}</h1>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Program</th>
+                        <th>Description</th>
+                        <th>Duration Hours</th>
+                        <th>Status</th>
+                        <th>Start Date</th>
+                        <th>Completion Date</th>
+                        <th>Progress Percentage</th>
+                        <th>Course URL</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{course.program.name}}</td>
+                        <td>{{ course.description }}</td>
+                        <td>{{ course.duration_hours |default:"Not specified" }}</td>
+                        <td><span class="status-{{ course.status|lower }}">{{ course.status }}</span></td>
+                        <td>{{ course.start_date|default:"Not specified" }}</td>
+                        <td>{{ course.completion_date|default:"Not completed" }}</td>
+                        <td>
+                            <div class="progress-container">
+                                <div class="progress-bar" style="width: {{ course.progress_percentage }}%"></div>
+                            </div>
+                            {{ course.progress_percentage }}%
+                        </td>
+                        <td>
+                            {% if course.course_url %}
+                                <a href="{{ course.course_url }}">View Course</a>
+                            {% else %}
+                                Not provided
+                            {% endif %}
+                        </td>
+                        <td>{{ course.notes | default:"No Notes"}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="action-buttons">
+            <a href="{% url 'edit_course' course.id %}"><button class="btn-secondary">Edit</button></a>
+            <a href="{% url 'delete_course' course.id %}"><button class="btn-danger">Delete</button></a>
+        </div>
+        <div class="nav-links">
+            <a href="{% url 'detail_program' course.program.id %}">Back to Program</a>
+        </div>
+    </div>
 </body>
 </html>

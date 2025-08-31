@@ -4,16 +4,26 @@
 <head>
     <meta charset="UTF-8">
     <title>Edit Course</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'learning_tracker/styles.css' %}">
 </head>
 <body>
-    <h1>Edit Course</h1>
-    <form action="{% url 'edit_course' course.id %}" method="post">
-        {% csrf_token %}
-        {% for field in form %}
-            <td>{{ field }}</td>
-        {% endfor %}
-        <button type="submit" onclick="return confirm('Are you sure you want to apply your changes?')">Apply</button>
-        <button type="submit" onclick="return confirm('Are you sure you want to cancel?')">Cancel</button>
-    </form>
+    <div class="container fade-in">
+        <h1>Edit Course</h1>
+        <form action="{% url 'edit_course' course.id %}" method="post">
+            {% csrf_token %}
+            <div class="form-fields">
+                {% for field in form %}
+                    <div class="form-field">
+                        {{field}}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="action-buttons">
+                <button type="submit" onclick="return confirm('Are you sure you want to apply your changes?')" class="btn-success">Apply Changes</button>
+                <a href="{% url 'detail_program' course.program.id %}"><button class="btn-secondary">Cancel</button></a>
+            </div>
+        </form>
+    </div>
 </body>
 </html>

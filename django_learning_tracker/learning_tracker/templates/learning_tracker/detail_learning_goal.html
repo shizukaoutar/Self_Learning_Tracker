@@ -4,30 +4,41 @@
 <head>
     <meta charset="UTF-8">
     <title>Detail of Learning Goal</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'learning_tracker/styles.css' %}">
 </head>
 <body>
-    <h1>Learning Goal: {{ program_goal.learning_goal.title }}</h1>
-    <h2>Program: {{ program_goal.program.name }}</h2>
-    <table>
-        <tr>
-            <td>Description</td>
-            <td>{{ program_goal.learning_goal.description }}</td>
-        </tr>
-        <tr>
-            <td>Target Date</td>
-            <td>{{ program_goal.learning_goal.target_date }}</td>
-        </tr>
-        <tr>
-            <td>Priority</td>
-            <td>{{ program_goal.learning_goal.priority }}</td>
-        </tr>
-        <tr>
-            <td>Is Achieved</td>
-            <td>{{ program_goal.learning_goal.is_achieved|yesno:"Yes,Not yet" }}</td>
-        </tr>   
-    </table>
-    <a href="{% url 'edit_learning_goal' program_goal.id %}">Edit</a>
-    <a href="{% url 'delete_learning_goal' program_goal.id %}">Delete</a>
-    <a href="{% url 'detail_program' program_goal.program.id %}">Back to Program</a>
+    <div class="container fade-in">
+        <h1>Learning Goal: {{ program_goal.learning_goal.title }}</h1>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Target Date</th>
+                        <th>Priority</th>
+                        <th>Is Achieved</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{ program_goal.learning_goal.description }}</td>
+                    <td>{{ program_goal.learning_goal.target_date | default:"Not specified"}}</td>
+                    <td>
+                        <span class="status-{{ program_goal.learning_goal.priority|lower }}">{{ program_goal.learning_goal.priority }}</span>
+                    </td>
+                    <td>{{ program_goal.learning_goal.is_achieved|yesno:"Yes,Not yet" }}</td>
+                </tr>
+            </tbody>
+            </table>
+        </div>
+        <div class="action-buttons">
+            <a href="{% url 'edit_learning_goal' program_goal.id %}"><button class="btn-secondary">Edit</button></a>
+            <a href="{% url 'delete_learning_goal' program_goal.id %}"><button class="btn-danger">Delete</button></a>
+        </div>
+        <div class="nav-links">
+            <a href="{% url 'detail_program' program_goal.program.id %}">Back to Program</a>
+        </div>
+    </div>
 </body>
 </html>

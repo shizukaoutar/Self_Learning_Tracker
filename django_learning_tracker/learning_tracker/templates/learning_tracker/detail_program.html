@@ -4,67 +4,123 @@
 <head>
     <meta charset="UTF-8">
     <title>Detail of Program</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'learning_tracker/styles.css' %}">
 </head>
 <body>
-    <h1>Program: {{ program.name }}</h1>
-    <h2>Program ID: {{ program.id }}</h2>
-    <table>
-        <th>Description</th>
-        <th>Provider</th>
-        <th>Difficulty Level</th>
-        <th>Status</th>
-        <th>Start Date</th>
-        <th>End Date</th>
-        <th>Progress %</th>
-        <th>Program URL</th>
-        <th>Notes</th>
-        <th>Courses</th>
-        <th>Skills</th>
-        <th>Goals</th>
-        <tr>
-            <td>{{ program.description }}</td>
-            <td>{{ program.provider }}</td>
-            <td>{{ program.difficulty_level }}</td>
-            <td>{{ program.status }}</td>
-            <td>{{ program.start_date }}</td>
-            <td>{{ program.end_date }}</td>
-            <td>{{ program.progress_percentage }}</td>
-            <td>{{ program.program_url }}</td>
-            <td>{{ program.notes }}</td>
-            <td>
-                {% for course in program.courses.all %}
-                    <li><a href="{% url 'detail_course' course.id %}">{{ course.name }}</a></li>
-                {% endfor %}
-                <form method="post" action="{% url 'add_course' program.id %}">
-                    {% csrf_token %}
-                    <input type="hidden" name="program" value="{{ program.id }}">
-                    <button type="submit">Add Course</button>
-                </form>
-            </td>
-            <td>
-                {% for skill in program.program_skills.all %}
-                    <li><a href="{% url 'detail_skill' skill.id %}">{{ skill.skill.name }}</a></li>
-                {% endfor %}
-                <form method="post" action="{% url 'add_skill' program.id %}">
-                    {% csrf_token %}
-                    <input type="hidden" name="program" value="{{ program.id }}">
-                    <button type="submit">Add Skill</button>
-                </form>
-            </td>
-            <td>
-                {% for goal in program.program_goals.all %}
-                    <li><a href="{% url 'detail_learning_goal' goal.id %}">{{ goal.learning_goal.title }}</a></li>
-                {% endfor %}
-                <form method="post" action="{% url 'add_learning_goal' program.id %}">
-                    {% csrf_token %}
-                    <input type="hidden" name="program" value="{{ program.id }}">
-                    <button type="submit">Add Goal</button>
-                </form>
-            </td>
-        </tr>
-    </table>
-    <a href="{% url 'edit_program' program.id %}">Edit Program</a>
-    <a href="{% url 'delete_program' program.id %}">Delete Program</a>
-    <a href="{% url 'list_programs' %}" return="list_programs">Back to Programs</a>
+    <div class="container fade-in">
+        <h1>Program: {{ program.name }}</h1>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Provider</th>
+                        <th>Difficulty Level</th>
+                        <th>Status</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Progress %</th>
+                        <th>Program URL</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ program.description }}</td>
+                        <td>{{ program.provider }}</td>
+                        <td>{{ program.difficulty_level }}</td>
+                        <td><span class="status-{{ program.status|lower }}">{{ program.status }}</span></td>
+                        <td>{{ program.start_date|default:"Not specified" }}</td>
+                        <td>{{ program.end_date|default:"Not specified" }}</td>
+                        <td>
+                            <div class="progress-container">
+                                <div class="progress-bar" style="width: {{ program.progress_percentage }}%"></div>
+                            </div>
+                            {{ program.progress_percentage }}%
+                        </td>
+                        <td>
+                            {% if program.program_url %}
+                                <a href="{{ program.program_url }}">View Program</a>
+                            {% else %}
+                                Not provided
+                            {% endif %}
+                        </td>
+                        <td>{{ program.notes | default:"No Notes"}}</td>
+                        
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Courses</th>
+                        <th>Skills</th>
+                        <th>Goals</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <ul>
+                                {% for course in program.courses.all %}
+                                    <li><a href="{% url 'detail_course' course.id %}">{{ course.name }}</a></li>
+                                {% empty %}
+                                    <li>No courses added</li>
+                                {% endfor %}
+                            </ul>
+                            <form method="post" action="{% url 'add_course' program.id %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="program" value="{{ program.id }}">
+                                <button type="submit" class="btn-success">Add Course</button>
+                            </form>
+                        </td>
+                        <td>
+                            <ul>
+                                {% for skill in program.program_skills.all %}
+                                    <li><a href="{% url 'detail_skill' skill.id %}">{{ skill.skill.name }}</a></li>
+                                {% empty %}
+                                    <li>No skills added</li>
+                                {% endfor %}
+                            </ul>
+                            <form method="post" action="{% url 'add_skill' program.id %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="program" value="{{ program.id }}">
+                                <button type="submit" class="btn-success">Add Skill</button>
+                            </form>
+                        </td>
+                        <td>
+                            <ul>
+                                {% for goal in program.program_goals.all %}
+                                    <li><a href="{% url 'detail_learning_goal' goal.id %}">{{ goal.learning_goal.title }}</a></li>
+                                {% empty %}
+                                    <li>No goals added</li>
+                                {% endfor %}
+                            </ul>
+                            <form method="post" action="{% url 'add_learning_goal' program.id %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="program" value="{{ program.id }}">
+                                <button type="submit" class="btn-success">Add Goal</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+
+        <div class="action-buttons">
+            <a href="{% url 'edit_program' program.id %}"><button class="btn-secondary">Edit Program</button></a>
+            <a href="{% url 'delete_program' program.id %}"><button class="btn-danger">Delete Program</button></a>
+        </div>
+
+        <div class="nav-links">
+            <a href="{% url 'list_programs' %}" return="list_programs">Back to Programs</a>
+        </div>
+    </div>
 </body>
 </html>

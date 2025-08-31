@@ -4,11 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Delete Program</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'learning_tracker/styles.css' %}">
 </head>
 <body>
-<form method="post">
-    {% csrf_token %}
-    <p>Are you sure you want to delete this program?</p>
-    <button type="submit">Yes, delete</button>
-    <a href="{% url 'list_programs' %}">No, go back</a>
-</form>
+    <div class="container fade-in">
+        <h1>Delete Program</h1>
+        <div class="confirmation">
+            <form method="post">
+                {% csrf_token %}
+                <p>Are you sure you want to delete this program?</p>
+                <div class="action-buttons">
+                    <button type="submit" class="btn-danger">Yes, Delete</button>
+                    <a href="{% url 'list_programs' %}"><button class="btn-secondary">No, Go Back</button></a>
+                </div>
+            </form>
+        </div>
+    </div>
