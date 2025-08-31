@@ -71,4 +71,6 @@ Since this is a self learning project, I used AI as follows:
 - Debugging errors in views.py
 
 
+## Live Demo
 
+![Live Demo](live_demo.mkv)
