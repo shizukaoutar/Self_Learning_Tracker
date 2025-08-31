@@ -4,9 +4,6 @@ Self Learning Tracker app
 
 This app is a simple Django web application that helps users track their learning goals and progress.
 
-![App Screenshot](app_screenshot.png)
-
-
 ## Entity Relationship Diagram 
 
 ![ERD](ERD.png)
@@ -73,5 +70,5 @@ Since this is a self learning project, I used AI as follows:
 
 ## Live Demo
 
-[![Live Demo](app_screenshot.png)]
+![Live Demo](app_screenshot.png)
 (https://drive.google.com/file/d/1d71ghKJNknsNNKNsEYn4yBlXpAEhd8qb/view?usp=drive_link)
