@@ -1,0 +1,24 @@
+<!--detail skill-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Detail of Skill</title>
+</head>
+<body>
+    <h1>Skill: {{ program_skill.skill.name }}</h1>
+    <table>
+        <tr>
+            <td>Description</td>
+            <td>{{ program_skill.skill.description }}</td>
+        </tr>
+        <tr>
+            <td>Skill Level</td>
+            <td>{{ program_skill.skill.get_skill_level_display}}</td>
+        </tr>
+    </table>
+    <a href="{% url 'edit_skill' program_skill.id %}">Edit</a>
+    <a href="{% url 'delete_skill' program_skill.id %}">Delete</a>
+    <a href="{% url 'detail_program' program_skill.program.id %}">Back to Program</a>
+
+</body>

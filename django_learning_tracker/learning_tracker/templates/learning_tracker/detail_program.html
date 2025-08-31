@@ -43,15 +43,7 @@
             </td>
             <td>
                 {% for skill in program.program_skills.all %}
-                    <li>{{ skill.skill.name }}</li>
-                    <form method="post" action="{% url 'edit_skill' skill.id %}">
-                        {% csrf_token %}
-                        <button type="submit">Edit</button>
-                    </form>
-                    <form method="post" action="{% url 'delete_skill' skill.id %}">
-                        {% csrf_token %}
-                        <button type="submit">Delete</button>
-                    </form>
+                    <li><a href="{% url 'detail_skill' skill.id %}">{{ skill.skill.name }}</a></li>
                 {% endfor %}
                 <form method="post" action="{% url 'add_skill' program.id %}">
                     {% csrf_token %}
@@ -61,15 +53,7 @@
             </td>
             <td>
                 {% for goal in program.program_goals.all %}
-                    <li>{{ goal.learning_goal.title }}</li>
-                    <form method="post" action="{% url 'edit_learning_goal' goal.id %}">
-                        {% csrf_token %}
-                        <button type="submit">Edit</button>
-                    </form>
-                    <form method="post" action="{% url 'delete_learning_goal' goal.id %}">
-                        {% csrf_token %}
-                        <button type="submit">Delete</button>
-                    </form>
+                    <li><a href="{% url 'detail_learning_goal' goal.id %}">{{ goal.learning_goal.title }}</a></li>
                 {% endfor %}
                 <form method="post" action="{% url 'add_learning_goal' program.id %}">
                     {% csrf_token %}

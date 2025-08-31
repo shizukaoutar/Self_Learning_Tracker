@@ -16,14 +16,27 @@ def list_programs(request):
     context = {'programs': programs}
     return render(request, 'learning_tracker/list_programs.html', context)
 
+#Listing program detail
 class DetailProgramView(DetailView):
     model = Program
     template_name = 'learning_tracker/detail_program.html' 
 
-
+#Listing course detail
 class DetailCourseView(DetailView):
     model = Course
     template_name = 'learning_tracker/detail_course.html'
+
+#Listing skill detail
+class DetailSkillView(DetailView):
+    model = ProgramSkill
+    template_name = 'learning_tracker/detail_skill.html'
+    context_object_name = 'program_skill'
+
+#Listing learning goal detail
+class DetailLearningGoalView(DetailView):
+    model = ProgramGoal
+    template_name = 'learning_tracker/detail_learning_goal.html'
+    context_object_name = 'program_goal'
 
 ### Adding items ###
 
@@ -124,48 +137,55 @@ class EditProgramView(UpdateView):
         id = self.kwargs.get('pk')
         return get_object_or_404(Program, pk=id)
     
+#Edit course
+class EditCourseView(UpdateView):
+    model = Course
+    form_class = CourseForm
+    queryset = Course.objects.all()
+    template_name = 'learning_tracker/edit_course.html'
+   
+    def get_success_url(self):
+        return reverse('detail_course', kwargs={'pk': self.kwargs['pk']})
+
+    def get_object(self):
+        id = self.kwargs.get('pk')
+        return get_object_or_404(Course, pk=id)
 
 #Edit skill
-def edit_skill(request, pk):
-    skill = Skill.objects.get(pk=pk)
-    if request.method == 'POST':
-        form = SkillForm(request.POST, instance=skill)
-        if form.is_valid():
-            form.save()
-            return redirect('list_skills')
-    else:
-        form = SkillForm(instance=skill)
-    
-    context = {'form': form}
-    return render(request, 'learning_tracker/edit_skill.html', context)
+class EditSkillView(UpdateView):
+    model = ProgramSkill 
+    template_name = 'learning_tracker/edit_skill.html'
+    fields = []
 
-#Edit course
-def edit_course(request, pk):
-    course = Course.objects.get(pk=pk)
-    if request.method == 'POST':
-        form = CourseForm(request.POST, instance=course)
-        if form.is_valid():
-            form.save()
-            return redirect('list_courses')
-    else:
-        form = CourseForm(instance=course)
+    def get_form(self, form_class=None):
+        # Create a form for the underlying Skill object
+        return SkillForm(data=self.request.POST or None, instance=self.object.skill)
     
-    context = {'form': form}
-    return render(request, 'learning_tracker/edit_course.html', context)
+    def form_valid(self, form):
+        # Save the Skill object
+        form.save()
+        return redirect('detail_skill', pk=self.object.pk)
+
+    def get_success_url(self):
+        return reverse('detail_program', kwargs={'pk': self.object.program.pk})
 
 #Edit learning goal
-def edit_learning_goal(request, pk):
-    learning_goal = LearningGoal.objects.get(pk=pk)
-    if request.method == 'POST':
-        form = LearningGoalForm(request.POST, instance=learning_goal)
-        if form.is_valid():
-            form.save()
-            return redirect('list_learning_goals')
-    else:
-        form = LearningGoalForm(instance=learning_goal)
+class EditLearningGoalView(UpdateView):
+    model = ProgramGoal
+    template_name = 'learning_tracker/edit_learning_goal.html'
+    fields = []
+
+    def get_form(self, form_class=None):
+        # Create a form for the underlying LearningGoal object
+        return LearningGoalForm(data=self.request.POST or None, instance=self.object.learning_goal)
     
-    context = {'form': form}
-    return render(request, 'learning_tracker/edit_learning_goal.html', context)
+    def form_valid(self, form):
+        # Save the LearningGoal object
+        form.save()
+        return redirect('detail_learning_goal', pk=self.object.pk)
+
+    def get_success_url(self):
+        return reverse('detail_program', kwargs={'pk': self.object.program.pk})
 
 
 ### Deleting items ###
@@ -183,25 +203,36 @@ class DeleteProgramView(DeleteView):
     def get_success_url(self):
         return reverse('list_programs')
 
-#Delete skill
-def delete_skill(request, pk):
-    skill = Skill.objects.get(pk=pk)
-    if request.method == 'POST':
-        skill.delete()
-        return redirect('list_skills')
-
 #Delete course
-def delete_course(request, pk):
-    course = Course.objects.get(pk=pk)
-    if request.method == 'POST':
-        course.delete()
-        return redirect('list_courses')
+class DeleteCourseView(DeleteView):
+    model = Course
+    template_name = 'learning_tracker/delete_course.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['program_id'] = self.object.program.id
+        return context
+
+    def get_success_url(self):
+        return reverse('detail_program', kwargs={'pk': self.object.program.id})
+    
+
+#Delete skill
+class DeleteSkillView(DeleteView):
+    model = ProgramSkill
+    template_name = 'learning_tracker/delete_skill.html'
+    context_object_name = 'program_skill'
+
+    def get_success_url(self):
+        return reverse('detail_program', kwargs={'pk': self.object.program.pk})
 
 #Delete learning goal
-def delete_learning_goal(request, pk):
-    learning_goal = LearningGoal.objects.get(pk=pk)
-    if request.method == 'POST':
-        learning_goal.delete()
-        return redirect('list_learning_goals')
+class DeleteLearningGoalView(DeleteView):
+    model = ProgramGoal
+    template_name = 'learning_tracker/delete_learning_goal.html'
+    context_object_name = 'program_goal'
+
+    def get_success_url(self):
+        return reverse('detail_program', kwargs={'pk': self.object.program.pk})
 
 
