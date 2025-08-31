@@ -9,7 +9,7 @@ This app is a simple Django web application that helps users track their learnin
 
 ## Entity Relationship Diagram 
 
-![ERD](erd.png)
+![ERD](ERD.png)
 
 
 ## Features
