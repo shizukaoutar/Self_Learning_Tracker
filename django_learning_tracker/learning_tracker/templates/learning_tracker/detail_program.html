@@ -47,7 +47,6 @@
                             {% endif %}
                         </td>
                         <td>{{ program.notes | default:"No Notes"}}</td>
-                        
                     </tr>
                 </tbody>
             </table>
@@ -111,7 +110,10 @@
             </table>
         </div>
 
-
+        <div class="created-at">
+            <label>Created at: {{ program.created_at }}</label>
+            <label>Updated at: {{ program.updated_at | default:"Not updated"}}</label>
+        </div>
 
         <div class="action-buttons">
             <a href="{% url 'edit_program' program.id %}"><button class="btn-secondary">Edit Program</button></a>
