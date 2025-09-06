@@ -66,9 +66,14 @@ Since this is a self learning project, I used AI as follows:
 - Correcting models.py
 - Correcting url links
 - Debugging errors in views.py
+- Generating Data for models
 
 
 ## Live Demo
 
 ![Live Demo](app_screenshot.png)
 (https://drive.google.com/file/d/1d71ghKJNknsNNKNsEYn4yBlXpAEhd8qb/view?usp=drive_link)
+
+## Link to the deployed app
+
+https://kaoutar13.pythonanywhere.com/
